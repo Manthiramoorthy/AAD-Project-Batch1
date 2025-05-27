@@ -22,11 +22,74 @@ class ListViewActivity : AppCompatActivity() {
             insets
         }
         val listView = findViewById<ListView>(R.id.listView)
-        val list = listOf("Moorthy", "Shantanu", "Shyam", "Prakhar")
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
+
+        val list = listOf(
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature),
+            Person("Moorthy", R.drawable.nature),
+            Person("Shyam", R.drawable.forest),
+            Person("Siva", R.drawable.nature)
+        )
+//        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, list)
+        val adapter = ProfileAdapter(list)
         listView.adapter = adapter
+
+
         listView.setOnItemClickListener { adapterView, view, position, l ->
-            Toast.makeText(this, "item clicked with index" + position, Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "item clicked" + list[position], Toast.LENGTH_LONG).show()
         }
     }
+}
+
+class Person(val name: String, val res: Int) {
+
 }

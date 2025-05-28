@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.os.Bundle
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -84,7 +85,11 @@ class RecyclerViewActivity : AppCompatActivity() {
         recyclerView.adapter = ProfileRecyclerViewAdapter(list)
 
         recyclerView.addItemDecoration(
-            DividerItemDecoration(this, DividerItemDecoration.HORIZONTAL)
+            DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
+
+        val username = intent.getStringExtra("Username")
+        val textViewUsername = findViewById<TextView>(R.id.textUserName)
+        textViewUsername.text = username
     }
 }

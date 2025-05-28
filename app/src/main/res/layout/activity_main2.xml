@@ -8,6 +8,11 @@
     tools:context=".MainActivity2"
     android:background="@android:color/holo_blue_bright"
     android:orientation="vertical">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login Page"
+        style="@style/header_style"/>
 
     <TextView
         android:id="@+id/textView"

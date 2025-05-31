@@ -17,10 +17,11 @@ import com.example.myapplication.databinding.ActivityAppPermissionBinding
 import androidx.core.net.toUri
 
 class AppPermissionActivity : AppCompatActivity() {
+    lateinit var binding: ActivityAppPermissionBinding
     override fun onCreate(savedInstanceState: Bundle?) {
+        binding = ActivityAppPermissionBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val binding = ActivityAppPermissionBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -49,7 +50,7 @@ class AppPermissionActivity : AppCompatActivity() {
     private fun call()
     {
         val intent = Intent(Intent.ACTION_CALL)
-        intent.data = "tel:5554".toUri()
+        intent.data = ("tel:" + binding.editTextPhoneNumber.text).toUri()
         startActivity(intent)
     }
 

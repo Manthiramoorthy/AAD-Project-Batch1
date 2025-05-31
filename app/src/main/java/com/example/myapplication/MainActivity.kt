@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -12,28 +13,28 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.myapplication.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        val button = findViewById<Button>(R.id.loginButton)
-        val userNameText = findViewById<EditText>(R.id.editTextUsername)
-        val passwordText = findViewById<EditText>(R.id.editTextPassword)
-        val greetingText = findViewById<TextView>(R.id.textGreeting)
-        val imageView = findViewById<ImageView>(R.id.imageView)
-        button.setOnClickListener {
-            val username = userNameText.text.toString()
-            val password = passwordText.text.toString()
+
+        val binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        binding.loginButton.setOnClickListener {
+            val username = binding.editTextUsername.text.toString()
+            val password = binding.editTextPassword.text.toString()
             Log.d("MainActivity", "Button is clicked")
             Log.d("MainActivity", username + " " + password)
             if (username.length > 7 && password.length > 7) {
                 val intent = Intent(this, RecyclerViewActivity::class.java)
                 intent.putExtra("Username", username)
+
                 startActivity(intent)
             } else {
-                greetingText.text = "Invalid Username/Password"
+
+                binding.textGreeting.text = "Invalid Username/Password"
                 Toast.makeText(this, "Invalid Username/Password", Toast.LENGTH_LONG).show()
             }
         }

@@ -32,7 +32,7 @@ class NotesActivity : AppCompatActivity() {
             ),
             Note(
                 "Title - Sample title",
-                "Title - Sample Description - fjsh , 37783y243"
+                "Title - Sample Description - fjsh , 37783y\n243Title -\n Sample Description - fjsh , 37783y243"
             ),
             Note(
                 "Title - Sample title",

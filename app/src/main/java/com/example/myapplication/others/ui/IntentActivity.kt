@@ -1,16 +1,15 @@
-package com.example.myapplication
+package com.example.myapplication.others.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.widget.Button
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import com.example.myapplication.databinding.ActivityContraintLayoutBinding
+import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityIntentBinding
 
 class IntentActivity : AppCompatActivity() {

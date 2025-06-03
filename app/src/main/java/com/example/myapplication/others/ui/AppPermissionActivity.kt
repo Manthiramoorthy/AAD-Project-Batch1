@@ -1,9 +1,8 @@
-package com.example.myapplication
+package com.example.myapplication.others.ui
 
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -15,6 +14,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.myapplication.databinding.ActivityAppPermissionBinding
 import androidx.core.net.toUri
+import com.example.myapplication.R
 
 class AppPermissionActivity : AppCompatActivity() {
     lateinit var binding: ActivityAppPermissionBinding
@@ -34,7 +34,7 @@ class AppPermissionActivity : AppCompatActivity() {
                 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(
                     this,
-                    arrayOf(Manifest.permission.CALL_PHONE, Manifest.permission.ACCESS_FINE_LOCATION),
+                    arrayOf(Manifest.permission.CALL_PHONE),
                     101
                 )
             } else {

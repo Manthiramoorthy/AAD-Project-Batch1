@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.others.adapter
 
 import android.annotation.SuppressLint
 import android.util.Log
@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.myapplication.R
+import com.example.myapplication.others.ui.Person
 
 class ProfileAdapter(private val list: List<Person>) : BaseAdapter(){
     override fun getCount(): Int {

@@ -6,8 +6,8 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -21,40 +21,13 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".AppPermissionActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:name=".notes.ui.NoteDetailsActivity"
+            android:exported="false" />
         <activity
-            android:name=".notes.NotesActivity"
+            android:name=".others.ui.AppPermissionActivity"
             android:exported="true"></activity>
         <activity
-            android:name=".BroadCastReceiverActivity"
-            android:exported="true">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
-        <activity
-            android:name=".IntentActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ListViewActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RecyclerViewActivity"
-            android:exported="true" />
-        <activity
-            android:name=".ConstraintLayoutActivity"
-            android:exported="true" />
-        <activity
-            android:name=".MainActivity2"
+            android:name=".notes.ui.NotesActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,8 +36,28 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".others.ui.BroadCastReceiverActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".others.ui.IntentActivity"
             android:exported="true" />
+        <activity
+            android:name=".others.ui.ListViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".others.ui.RecyclerViewActivity"
+            android:exported="true" />
+        <activity
+            android:name=".others.ui.ConstraintLayoutActivity"
+            android:exported="true" />
+        <activity
+            android:name=".others.ui.MainActivity2"
+            android:exported="true">
+
+        </activity>
+        <activity
+            android:name=".others.ui.MainActivity"
+            android:exported="true" ></activity>
     </application>
 
 </manifest>

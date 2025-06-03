@@ -1,10 +1,9 @@
-package com.example.myapplication
+package com.example.myapplication.others.ui
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -12,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.myapplication.R
 
 class BroadCastReceiverActivity : AppCompatActivity() {
     private val connectivityBroadcastReceiver = ConnectivityBroadcastReceiver()
@@ -25,8 +25,7 @@ class BroadCastReceiverActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
-        val filter = IntentFilter(Intent.ACTION_BATTERY_CHANGED)
-        filter.addAction(Intent.ACTION_BATTERY_OKAY)
+        val filter = IntentFilter(Intent.ACTION_POWER_CONNECTED)
         registerReceiver(connectivityBroadcastReceiver, filter)
     }
 

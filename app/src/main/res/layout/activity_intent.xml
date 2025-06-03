@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".IntentActivity">
+    tools:context=".others.ui.IntentActivity">
     <Button
         android:id="@+id/buttonOpenGoogle"
         android:layout_width="wrap_content"

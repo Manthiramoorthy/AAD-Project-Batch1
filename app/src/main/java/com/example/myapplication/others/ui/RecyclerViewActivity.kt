@@ -1,5 +1,6 @@
 package com.example.myapplication.others.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -11,17 +12,46 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.others.adapter.ProfileRecyclerViewAdapter
 import com.example.myapplication.R
+import com.example.myapplication.databinding.ActivityRecyclerViewBinding
+import com.example.myapplication.others.common.Constant
 
 class RecyclerViewActivity : AppCompatActivity() {
+    lateinit var binding: ActivityRecyclerViewBinding
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == 102 && resultCode == RESULT_OK) {
+            val uri = data?.data
+            binding.profilePic.setImageURI(uri)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_recycler_view)
+        binding = ActivityRecyclerViewBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        binding.logoutButton.setOnClickListener {
+            val sharedPref = getSharedPreferences(Constant.SHAREDPREF_NAME, MODE_PRIVATE)
+            sharedPref.edit().apply {
+                this.clear()
+                this.apply()
+            }
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        binding.uploadButton.setOnClickListener {
+            val intent = Intent(Intent.ACTION_OPEN_DOCUMENT)
+            intent.addCategory(Intent.CATEGORY_OPENABLE)
+            intent.type = "image/*"
+            startActivityForResult(intent, 102)
+        }
+
 
         val list = listOf(
             Person("Moorthy", R.drawable.nature),
@@ -80,17 +110,16 @@ class RecyclerViewActivity : AppCompatActivity() {
             Person("Siva", R.drawable.nature)
         )
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        recyclerView.layoutManager = GridLayoutManager(this, 2)
-        recyclerView.adapter = ProfileRecyclerViewAdapter(list)
 
-        recyclerView.addItemDecoration(
+        binding.recyclerView.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+//        recyclerView.layoutManager = GridLayoutManager(this, 2)
+        binding.recyclerView.adapter = ProfileRecyclerViewAdapter(list)
+
+        binding.recyclerView.addItemDecoration(
             DividerItemDecoration(this, DividerItemDecoration.VERTICAL)
         )
 
-        val username = intent.getStringExtra("Username")
-        val textViewUsername = findViewById<TextView>(R.id.textUserName)
-        textViewUsername.text = username
+        val username = intent.getStringExtra(Constant.USERNAME_KEY)
+        binding.textUserName.text = username
     }
 }

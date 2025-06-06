@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -38,9 +39,9 @@ class RecyclerViewActivity : AppCompatActivity() {
 
         binding.logoutButton.setOnClickListener {
             val sharedPref = getSharedPreferences(Constant.SHAREDPREF_NAME, MODE_PRIVATE)
-            sharedPref.edit().apply {
-                this.clear()
-                this.apply()
+            sharedPref.edit {
+//                remove(Constant.IS_LOGGED_IN_KEY) // remove only the IS_LOGGED_IN_KEY
+                clear() // remove all the content
             }
             onBackPressedDispatcher.onBackPressed()
         }

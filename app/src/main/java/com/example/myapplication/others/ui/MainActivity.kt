@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.edit
 import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.others.common.Constant
@@ -46,10 +47,10 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, RecyclerViewActivity::class.java)
                 intent.putExtra(Constant.USERNAME_KEY, username)
 
-                val editor = sharedPref.edit()
-                editor.putBoolean(Constant.IS_LOGGED_IN_KEY, true)
-                editor.putString(Constant.USERNAME_KEY, username)
-                editor.apply()
+                sharedPref.edit {
+                    putBoolean(Constant.IS_LOGGED_IN_KEY, true)
+                    putString(Constant.USERNAME_KEY, username)
+                }
                 startActivity(intent)
             } else {
 

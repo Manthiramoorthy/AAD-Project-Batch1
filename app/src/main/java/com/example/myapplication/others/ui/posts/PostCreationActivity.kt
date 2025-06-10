@@ -14,9 +14,7 @@ import com.example.myapplication.others.api.Post
 import com.example.myapplication.others.common.ResultWrapper
 import com.example.myapplication.others.common.safeApiCall
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PostCreationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,8 +35,9 @@ class PostCreationActivity : AppCompatActivity() {
                 body = content
             )
             lifecycleScope.launch(Dispatchers.IO) {
+                val repository = ApiRepository(this@PostCreationActivity)
                 val result = safeApiCall {
-                    ApiRepository.apiService.createPost(post)
+                    repository.apiService.createPost(post)
                 }
                 when(result) {
                     is ResultWrapper.Success -> {

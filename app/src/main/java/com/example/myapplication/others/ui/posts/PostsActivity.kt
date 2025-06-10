@@ -2,6 +2,7 @@ package com.example.myapplication.others.ui.posts
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -39,9 +40,38 @@ class PostsActivity : AppCompatActivity() {
             val intent = Intent(this, PostCreationActivity::class.java)
             startActivity(intent)
         }
+        binding.refreshButton.setOnClickListener {
+            updateUI()
+        }
+    }
+
+    private fun updateUI() {
+        lifecycleScope.launch {
+            val repository = ApiRepository(this@PostsActivity)
+            val result =
+                lifecycleScope.async(Dispatchers.IO) {
+                    safeApiCall {
+                        repository.apiService.getPost()
+                    }
+                }.await()
+            when(result) {
+                is ResultWrapper.Success -> {
+                    binding.errorCard.visibility = View.GONE
+                    binding.recyclerViewPosts.adapter = PostAdapter(result.data)
+                    binding.recyclerViewPosts.layoutManager =
+                        LinearLayoutManager(this@PostsActivity, LinearLayoutManager.VERTICAL, false)
+                }
+                is ResultWrapper.Failure -> {
+                    Toast.makeText(this@PostsActivity, result.message, Toast.LENGTH_LONG).show()
+                    binding.errorText.text = result.message
+                    binding.errorCard.visibility = View.VISIBLE
+                }
+            }
+        }
     }
 
     override fun onStart() {
+        updateUI()
 //        lifecycleScope.launch(Dispatchers.IO) {
 //            val list = ApiRepository.apiService.getPost()
 //            withContext(Dispatchers.Main) {
@@ -51,24 +81,7 @@ class PostsActivity : AppCompatActivity() {
 //            }
 //        }
 
-        lifecycleScope.launch {
-                val result =
-                    lifecycleScope.async(Dispatchers.IO) {
-                        safeApiCall {
-                            ApiRepository.apiService.getPost()
-                        }
-                    }.await()
-                when(result) {
-                    is ResultWrapper.Success -> {
-                        binding.recyclerViewPosts.adapter = PostAdapter(result.data)
-                        binding.recyclerViewPosts.layoutManager =
-                            LinearLayoutManager(this@PostsActivity, LinearLayoutManager.VERTICAL, false)
-                    }
-                    is ResultWrapper.Failure -> {
-                        Toast.makeText(this@PostsActivity, result.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-        }
+
 
         super.onStart()
     }

@@ -15,7 +15,7 @@ suspend fun <T> safeApiCall(
     } catch (e:JsonParseException) {
         ResultWrapper.Failure("Invalid response")
     } catch (e: Exception) {
-        ResultWrapper.Failure("unExpected error, please contact admin")
+        ResultWrapper.Failure("Unexpected error, please contact admin")
     }
 }
 

@@ -17,5 +17,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Stop Play"/>
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date" />
+    <Button
+        android:id="@+id/oneTimeScheduleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="One time Schedule"/>
+
+    <Button
+        android:id="@+id/peroidicTimeScheduleButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Periodic Schedule"/>
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="cancel the schedule"/>
+
+
 
 </LinearLayout>

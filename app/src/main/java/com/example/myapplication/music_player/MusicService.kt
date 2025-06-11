@@ -14,7 +14,7 @@ class MusicService : Service() {
         mediaPlayer = MediaPlayer.create(this, R.raw.sample)
         mediaPlayer.isLooping = true
         mediaPlayer.start()
-        return super.onStartCommand(intent, flags, startId)
+        return START_NOT_STICKY
     }
 
     override fun onDestroy() {

@@ -18,10 +18,6 @@ class MusicForegroundService : Service() {
 
     override fun onBind(intent: Intent): IBinder? = null
     lateinit var mediaPlayer: MediaPlayer
-    override fun onCreate() {
-        createNotificationChannel()
-        super.onCreate()
-    }
     @SuppressLint("ForegroundServiceType")
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         if (intent?.action == "ACTION_TOGGLE_PLAY") {
@@ -37,13 +33,10 @@ class MusicForegroundService : Service() {
 
         } else {
             mediaPlayer = MediaPlayer.create(this, R.raw.sample)
-            mediaPlayer.isLooping = true
             mediaPlayer.start()
+            createNotificationChannel()
             val notification = createNotification()
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
-                startForeground(101, notification)
-            else
-                startForeground(101, notification, FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK)
+            startForeground(1, notification)
         }
         return START_NOT_STICKY
     }

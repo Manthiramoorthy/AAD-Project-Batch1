@@ -3,18 +3,29 @@ package com.example.myapplication.music_player
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.icu.util.Calendar
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityMusicPlayerBinding
+import java.util.concurrent.TimeUnit
 
 class MusicPlayerActivity : AppCompatActivity() {
+    private val LOG_TAG = MusicPlayerActivity::class.java.simpleName
     lateinit var serviceIntent: Intent
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,7 +55,44 @@ class MusicPlayerActivity : AppCompatActivity() {
         binding.stopButton.setOnClickListener {
             stopService(serviceIntent)
         }
+
+
+
+        binding.oneTimeScheduleButton.setOnClickListener {
+            Log.d(LOG_TAG, "Value " + binding.editTextDate.text)
+            val constraint = Constraints.Builder()
+                .setRequiresCharging(true)
+                .build()
+            val timeInMillis = calculateDelayInMillis(11,6)
+            val request = OneTimeWorkRequestBuilder<MusicWorker>()
+                .setConstraints(constraint)
+                .build()
+            WorkManager.getInstance(this).enqueue(request)
+
+        }
+
+        binding.peroidicTimeScheduleButton.setOnClickListener {
+            val request = PeriodicWorkRequestBuilder<MusicWorker>(15, TimeUnit.MINUTES)
+                .build()
+            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
+                "periotic work",
+                ExistingPeriodicWorkPolicy.KEEP,
+                request
+            )
+        }
+
+
     }
+
+    fun calculateDelayInMillis(hour: Int, minute: Int): Long {
+        val nowCalendar = Calendar.getInstance()
+        val alarmCalender = Calendar.getInstance().apply {
+            set(Calendar.HOUR, hour)
+            set(Calendar.MINUTE, minute)
+        }
+        return (alarmCalender.timeInMillis - nowCalendar.timeInMillis)
+    }
+
 
     override fun onRequestPermissionsResult(
         requestCode: Int,

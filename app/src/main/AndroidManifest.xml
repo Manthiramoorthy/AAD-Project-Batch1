@@ -30,11 +30,7 @@
         <activity
             android:name=".LocationActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".notification.NotificationActivity"
@@ -53,11 +49,6 @@
         <activity
             android:name=".music_player.MusicPlayerActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".others.ui.coroutines.CoroutinesExampleActivity"
@@ -76,11 +67,6 @@
         <activity
             android:name=".others.ui.posts.PostsActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".notes.ui.NoteDetailsActivity"
@@ -90,7 +76,13 @@
             android:exported="true" />
         <activity
             android:name=".notes.ui.NotesActivity"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".others.ui.BroadCastReceiverActivity"
             android:exported="true" />

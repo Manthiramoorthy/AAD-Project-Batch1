@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Toast
 import android.window.OnBackInvokedDispatcher
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -23,6 +24,7 @@ import kotlinx.coroutines.withContext
 
 class NoteDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteDetailsBinding
+    val viewModel: NoteDetailsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -52,33 +54,34 @@ class NoteDetailsActivity : AppCompatActivity() {
                 type = "text/plain" // MIME type
             }
             startActivityForResult(intent, 101)
-
         }
 
         binding.saveButton.setOnClickListener {
             val title = binding.titleEditText.text.toString()
             val content = binding.contentEditText.text.toString()
-            lifecycleScope.launch(Dispatchers.IO) {
                 if (source == Constants.CREATE_VALUE) {
-                    createNotes(title, content)
+                    viewModel.createNote(this, title, content)
                 } else {
                     val id = intent.getIntExtra(Constants.ID_KEY, 0)
-                    update(
-                        id = id,
-                        title = title,
-                        content = content
-                    )
+                    viewModel.updateNote(this,id,  title, content)
                 }
-            }
         }
 
         binding.deleteButton.setOnClickListener {
             val id = intent.getIntExtra(Constants.ID_KEY, 0)
-            val note = Note(id = id, title = "", content = "")
-            lifecycleScope.launch(Dispatchers.IO) {
-                delete(note)
-            }
+            viewModel.deleteNote(this, id)
 
+        }
+
+        viewModel.result.observe(this) { result ->
+            when (result) {
+                is Result.Success -> {
+                    Toast.makeText(this, result.message, Toast.LENGTH_LONG).show()
+                    onBackPressedDispatcher.onBackPressed()
+                }
+                is Result.Failure -> {
+                    Toast.makeText(this, result.message, Toast.LENGTH_LONG).show()                }
+            }
         }
 
     }
@@ -97,54 +100,5 @@ class NoteDetailsActivity : AppCompatActivity() {
     private fun readTextFromUri(uri: Uri): String {
         val inputStream = contentResolver.openInputStream(uri)
         return inputStream?.bufferedReader().use { it?.readText() ?: "" }
-    }
-
-
-
-    private suspend fun delete(note: Note) {
-        NoteDatabase.getInstance(this@NoteDetailsActivity)
-            .noteDao().delete(note)
-        withContext(Dispatchers.Main) {
-            Toast.makeText(this@NoteDetailsActivity, "Deleted", Toast.LENGTH_LONG).show()
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
-    private suspend fun update(id: Int, title: String, content: String) {
-        val note = Note(
-            id = id,
-            title = title,
-            content = content
-        )
-        NoteDatabase.getInstance(this@NoteDetailsActivity)
-            .noteDao().update(note)
-        withContext(Dispatchers.Main) {
-            Toast.makeText(this@NoteDetailsActivity, "Updated", Toast.LENGTH_LONG).show()
-            onBackPressedDispatcher.onBackPressed()
-        }
-    }
-
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        Log.d("NoteDetailsActivty", "getOnBackInvokedDispatcher")
-//        val title = binding.titleEditText.text.toString()
-//        val content = binding.contentEditText.text.toString()
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            createNotes(title, content)
-//        }
-//    }
-
-    private suspend fun createNotes(title: String, content: String) {
-
-        val note = Note(
-            title = title,
-            content = content
-        )
-        NoteDatabase.getInstance(this@NoteDetailsActivity)
-            .noteDao().insert(note)
-        withContext(Dispatchers.Main) {
-            Toast.makeText(this@NoteDetailsActivity, "Created", Toast.LENGTH_LONG).show()
-            onBackPressedDispatcher.onBackPressed()
-        }
     }
 }

@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.Manifest
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.os.Bundle
 import android.os.Looper
 import android.util.Log
@@ -17,6 +18,7 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import java.util.Locale
 
 
 val LOG_TAG = LocationActivity::class.simpleName
@@ -75,9 +77,20 @@ class LocationActivity : AppCompatActivity() {
         val callback = object: LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
                 val location = result.lastLocation
-                val output = "longitude " + location?.longitude + " latitude " + location?.latitude
-                Log.d(LOG_TAG, output)
-                binding.locationText.text = output
+
+                val geocoder = Geocoder(this@LocationActivity, Locale.getDefault())
+                if (location != null) {
+                    val locationDetails = geocoder.getFromLocation(
+                        location.latitude,
+                        location.longitude,
+                        1
+                    )
+
+                    val output = "Locality : " + locationDetails?.get(0)?.getAddressLine(0)
+
+                    Log.d(LOG_TAG, output)
+                    binding.locationText.text = output
+                }
                 super.onLocationResult(result)
             }
         }

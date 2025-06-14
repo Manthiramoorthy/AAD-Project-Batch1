@@ -1,8 +1,9 @@
-package com.example.myapplication.others.ui.posts
+package com.example.myapplication.posts
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PostCreationActivity : AppCompatActivity() {
+    val viewModel: PostCreationViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -30,30 +32,16 @@ class PostCreationActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             val title = binding.titleEditText.text.toString()
             val content = binding.contentEditText.text.toString()
-            val post = Post(
-                title = title,
-                body = content
-            )
-            lifecycleScope.launch(Dispatchers.IO) {
-                val repository = ApiRepository(this@PostCreationActivity)
-                val result = safeApiCall {
-                    repository.apiService.createPost(post)
-                }
-                when(result) {
-                    is ResultWrapper.Success -> {
-                        onBackPressedDispatcher.onBackPressed()
-                    }
-                    is ResultWrapper.Failure -> {
-                        Toast.makeText(this@PostCreationActivity, result.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-//            val result = lifecycleScope.async { ApiRepository.apiService.createPost(post) }
-//            lifecycleScope.launch {
-//                if (result.await() != null) {
-//
-//                }
-//            }
+            viewModel.createPost(this, title, content)
+        }
+
+        viewModel.successMessage.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            onBackPressedDispatcher.onBackPressed()
+        }
+
+        viewModel.failureMessage.observe(this) { message ->
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         }
     }
 }

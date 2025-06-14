@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".others.ui.posts.PostsActivity">
+    tools:context=".posts.PostsActivity">
     <Button
         android:id="@+id/refreshButton"
         android:layout_width="match_parent"

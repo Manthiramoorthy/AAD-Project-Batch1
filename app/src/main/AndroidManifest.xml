@@ -62,11 +62,16 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".others.ui.posts.PostCreationActivity"
+            android:name=".posts.PostCreationActivity"
             android:exported="false" />
         <activity
-            android:name=".others.ui.posts.PostsActivity"
+            android:name=".posts.PostsActivity"
             android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".notes.ui.NoteDetailsActivity"
@@ -77,11 +82,7 @@
         <activity
             android:name=".notes.ui.NotesActivity"
             android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".others.ui.BroadCastReceiverActivity"

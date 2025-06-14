@@ -1,10 +1,11 @@
-package com.example.myapplication.others.ui.posts
+package com.example.myapplication.posts
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -17,14 +18,12 @@ import com.example.myapplication.others.api.ApiRepository
 import com.example.myapplication.others.common.ResultWrapper
 import com.example.myapplication.others.common.safeApiCall
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class PostsActivity : AppCompatActivity() {
     lateinit var binding: ActivityPostsBinding
+    val viewModel: PostsViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,47 +40,27 @@ class PostsActivity : AppCompatActivity() {
             startActivity(intent)
         }
         binding.refreshButton.setOnClickListener {
-            updateUI()
+            viewModel.updateUI(this)
         }
+
+        viewModel.successData.observe(this) { data ->
+            binding.errorCard.visibility = View.GONE
+            binding.recyclerViewPosts.adapter = PostAdapter(data)
+            binding.recyclerViewPosts.layoutManager =
+                LinearLayoutManager(this@PostsActivity, LinearLayoutManager.VERTICAL, false)
+        }
+
+        viewModel.failureMessage.observe(this) { message ->
+            Toast.makeText(this@PostsActivity, message, Toast.LENGTH_LONG).show()
+            binding.errorText.text = message
+            binding.errorCard.visibility = View.VISIBLE
+        }
+
     }
 
-    private fun updateUI() {
-        lifecycleScope.launch {
-            val repository = ApiRepository(this@PostsActivity)
-            val result =
-                lifecycleScope.async(Dispatchers.IO) {
-                    safeApiCall {
-                        repository.apiService.getPost()
-                    }
-                }.await()
-            when(result) {
-                is ResultWrapper.Success -> {
-                    binding.errorCard.visibility = View.GONE
-                    binding.recyclerViewPosts.adapter = PostAdapter(result.data)
-                    binding.recyclerViewPosts.layoutManager =
-                        LinearLayoutManager(this@PostsActivity, LinearLayoutManager.VERTICAL, false)
-                }
-                is ResultWrapper.Failure -> {
-                    Toast.makeText(this@PostsActivity, result.message, Toast.LENGTH_LONG).show()
-                    binding.errorText.text = result.message
-                    binding.errorCard.visibility = View.VISIBLE
-                }
-            }
-        }
-    }
 
     override fun onStart() {
-        updateUI()
-//        lifecycleScope.launch(Dispatchers.IO) {
-//            val list = ApiRepository.apiService.getPost()
-//            withContext(Dispatchers.Main) {
-//                binding.recyclerViewPosts.adapter = PostAdapter(list)
-//                binding.recyclerViewPosts.layoutManager =
-//                    LinearLayoutManager(this@PostsActivity, LinearLayoutManager.VERTICAL, false)
-//            }
-//        }
-
-
+        viewModel.updateUI(this)
 
         super.onStart()
     }

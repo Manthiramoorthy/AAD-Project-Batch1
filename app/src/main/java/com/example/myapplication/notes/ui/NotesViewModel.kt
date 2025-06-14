@@ -5,19 +5,24 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.notes.local_db.Note
+import com.example.myapplication.notes.local_db.NoteDao
 import com.example.myapplication.notes.local_db.NoteDatabase
 import com.example.myapplication.others.common.safeApiCall
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class NotesViewModel: ViewModel() {
+class NotesViewModel(
+    private val noteDao: NoteDao
+): ViewModel() {
     val noteList = MutableLiveData<List<Note>?>()
     val errorMessage = MutableLiveData<String>()
-    fun getNotes(context: Context) {
+    fun getNotes() {
         viewModelScope.launch {
             try {
-                val list = viewModelScope.async(Dispatchers.IO) { NoteDatabase.getInstance(context).noteDao().getAll() }.await()
+                val list = viewModelScope.async(Dispatchers.IO) {
+                    noteDao.getAll() // empty
+                }.await()
                 if (list != null && list.isNotEmpty()) {
                     noteList.value = list
                 } else {

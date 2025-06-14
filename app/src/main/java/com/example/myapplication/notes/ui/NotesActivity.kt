@@ -10,6 +10,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
@@ -25,12 +26,16 @@ import kotlinx.coroutines.withContext
 
 class NotesActivity : AppCompatActivity() {
     lateinit var binding: ActivityNotesBinding
-    val viewModel: NotesViewModel by viewModels()
+    lateinit var viewModel: NotesViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityNotesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val noteDao = NoteDatabase.getInstance(this).noteDao()
+        val factory = NotesViewModelFactory(noteDao)
+        viewModel = ViewModelProvider(this, factory)[NotesViewModel::class.java]
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -62,7 +67,7 @@ class NotesActivity : AppCompatActivity() {
     }
 
     override fun onStart() {
-        viewModel.getNotes(this)
+        viewModel.getNotes()
         super.onStart()
     }
 }

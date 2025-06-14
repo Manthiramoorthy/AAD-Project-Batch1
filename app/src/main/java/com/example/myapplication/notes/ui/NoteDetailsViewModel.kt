@@ -5,15 +5,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.notes.local_db.Note
+import com.example.myapplication.notes.local_db.NoteDao
 import com.example.myapplication.notes.local_db.NoteDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class NoteDetailsViewModel(): ViewModel() {
+class NoteDetailsViewModel(
+    val noteDao: NoteDao
+): ViewModel() {
     val result = MutableLiveData<Result>()
 
-    fun createNote(context: Context, title: String, content: String) {
+    fun createNote(title: String, content: String) {
         viewModelScope.launch {
             try {
                 val note = Note(
@@ -21,8 +24,7 @@ class NoteDetailsViewModel(): ViewModel() {
                     content = content
                 )
                 viewModelScope.async(Dispatchers.IO) {
-                    NoteDatabase.getInstance(context)
-                        .noteDao().insert(note)
+                    noteDao.insert(note)
                 }.await()
                 result.value = Result.Success("Inserted")
             } catch (e: Exception) {
@@ -32,7 +34,7 @@ class NoteDetailsViewModel(): ViewModel() {
         }
     }
 
-    fun updateNote(context: Context,id: Int, title: String, content: String) {
+    fun updateNote(id: Int, title: String, content: String) {
         viewModelScope.launch {
             try {
                 val note = Note(
@@ -41,8 +43,7 @@ class NoteDetailsViewModel(): ViewModel() {
                     content = content
                 )
                 viewModelScope.async(Dispatchers.IO) {
-                    NoteDatabase.getInstance(context)
-                        .noteDao().update(note)
+                    noteDao.update(note)
                 }.await()
                 result.value = Result.Success("Updated")
             } catch (e: Exception) {
@@ -52,7 +53,7 @@ class NoteDetailsViewModel(): ViewModel() {
         }
     }
 
-    fun deleteNote(context: Context, id: Int) {
+    fun deleteNote(id: Int) {
         viewModelScope.launch {
             try {
                 val note = Note(
@@ -61,8 +62,7 @@ class NoteDetailsViewModel(): ViewModel() {
                     content = ""
                 )
                 viewModelScope.async(Dispatchers.IO) {
-                    NoteDatabase.getInstance(context)
-                        .noteDao().delete(note)
+                    noteDao.delete(note)
                 }.await()
                 result.value = Result.Success("Deleted")
             } catch (e: Exception) {

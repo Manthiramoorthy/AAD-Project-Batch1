@@ -12,11 +12,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityNoteDetailsBinding
 import com.example.myapplication.notes.Constants
 import com.example.myapplication.notes.local_db.Note
+import com.example.myapplication.notes.local_db.NoteDao
 import com.example.myapplication.notes.local_db.NoteDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,11 +26,19 @@ import kotlinx.coroutines.withContext
 
 class NoteDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteDetailsBinding
-    val viewModel: NoteDetailsViewModel by viewModels()
+    lateinit var viewModel: NoteDetailsViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
         binding = ActivityNoteDetailsBinding.inflate(layoutInflater)
+
+
+        val noteDao = NoteDatabase.getInstance(this).noteDao()
+        val factory = NoteDetailsViewModelFactory(noteDao)
+        viewModel = ViewModelProvider(this, factory)[NoteDetailsViewModel::class.java]
+
+
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -60,16 +70,16 @@ class NoteDetailsActivity : AppCompatActivity() {
             val title = binding.titleEditText.text.toString()
             val content = binding.contentEditText.text.toString()
                 if (source == Constants.CREATE_VALUE) {
-                    viewModel.createNote(this, title, content)
+                    viewModel.createNote(title, content)
                 } else {
                     val id = intent.getIntExtra(Constants.ID_KEY, 0)
-                    viewModel.updateNote(this,id,  title, content)
+                    viewModel.updateNote(id,  title, content)
                 }
         }
 
         binding.deleteButton.setOnClickListener {
             val id = intent.getIntExtra(Constants.ID_KEY, 0)
-            viewModel.deleteNote(this, id)
+            viewModel.deleteNote(id)
 
         }
 

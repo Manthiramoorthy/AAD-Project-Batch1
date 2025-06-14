@@ -1,12 +1,10 @@
-package com.example.myapplication.notes.ui
+package com.example.myapplication.notes.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.notes.local_db.Note
 import com.example.myapplication.notes.local_db.NoteDao
-import com.example.myapplication.notes.local_db.NoteDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch

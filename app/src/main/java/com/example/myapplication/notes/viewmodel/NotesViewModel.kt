@@ -1,26 +1,25 @@
-package com.example.myapplication.notes.ui
+package com.example.myapplication.notes.viewmodel
 
-import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.notes.local_db.Note
 import com.example.myapplication.notes.local_db.NoteDao
-import com.example.myapplication.notes.local_db.NoteDatabase
-import com.example.myapplication.others.common.safeApiCall
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class NotesViewModel(
-    private val noteDao: NoteDao
+    private val noteDao: NoteDao,
+    private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ): ViewModel() {
     val noteList = MutableLiveData<List<Note>?>()
     val errorMessage = MutableLiveData<String>()
     fun getNotes() {
         viewModelScope.launch {
             try {
-                val list = viewModelScope.async(Dispatchers.IO) {
+                val list = viewModelScope.async(dispatcher) {
                     noteDao.getAll() // empty
                 }.await()
                 if (list != null && list.isNotEmpty()) {

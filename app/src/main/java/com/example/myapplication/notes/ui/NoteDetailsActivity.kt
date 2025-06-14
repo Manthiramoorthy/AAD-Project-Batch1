@@ -6,23 +6,18 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
-import android.window.OnBackInvokedDispatcher
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityNoteDetailsBinding
 import com.example.myapplication.notes.Constants
-import com.example.myapplication.notes.local_db.Note
-import com.example.myapplication.notes.local_db.NoteDao
 import com.example.myapplication.notes.local_db.NoteDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.myapplication.notes.viewmodel.NoteDetailsViewModel
+import com.example.myapplication.notes.viewmodel.NoteDetailsViewModelFactory
+import com.example.myapplication.notes.viewmodel.Result
 
 class NoteDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityNoteDetailsBinding

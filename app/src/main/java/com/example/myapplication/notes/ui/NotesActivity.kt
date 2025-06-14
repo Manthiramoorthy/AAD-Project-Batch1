@@ -2,27 +2,20 @@ package com.example.myapplication.notes.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ActivityNotesBinding
 import com.example.myapplication.notes.Constants
 import com.example.myapplication.notes.adapter.NotesAdapter
-import com.example.myapplication.notes.data.Note
 import com.example.myapplication.notes.local_db.NoteDatabase
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import com.example.myapplication.notes.viewmodel.NotesViewModel
+import com.example.myapplication.notes.viewmodel.NotesViewModelFactory
 
 class NotesActivity : AppCompatActivity() {
     lateinit var binding: ActivityNotesBinding

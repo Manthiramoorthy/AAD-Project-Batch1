@@ -40,6 +40,23 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.junit.ktx)
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test:runner:1.5.2")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.6.1")
+
+
+
+    // Unit testing
+    testImplementation("junit:junit:4.13.2")
+// Coroutines testing
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+// LiveData testing
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+// Mocking
+    testImplementation("io.mockk:mockk:1.13.10") // or use Mockito
+
 
     implementation(libs.play.services.location)
     val work_version = "2.10.1"

@@ -1,5 +1,7 @@
 package com.example.myapplication
 
+import androidx.test.core.app.takeScreenshot
+import androidx.test.espresso.Espresso.closeSoftKeyboard
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.action.ViewActions.typeText
@@ -21,10 +23,27 @@ class MainActivityTest {
     val androidActivityRule = ActivityScenarioRule(MainActivity::class.java)
 
     @Test
-    fun Given() {
+    fun Given_Login_Page_When_Invalid_Credentials() {
         onView(withId(R.id.editTextUsername)).perform(typeText("user"))
         onView(withId(R.id.editTextPassword)).perform(typeText("12345"))
+        closeSoftKeyboard()
+
         onView(withId(R.id.loginButton)).perform(click())
         onView(withText("Invalid Username/Password")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun Given_Login_Page_When_Valid_Credentials() {
+        val username = "Username"
+        onView(withId(R.id.editTextUsername)).perform(typeText(username))
+        onView(withId(R.id.editTextPassword)).perform(typeText("1234567890"))
+
+        onView(withId(R.id.loginButton)).perform(click())
+        onView(withText(username)).check(matches(isDisplayed()))
+
+        onView(withId(R.id.logoutButton)).perform(click())
+
+        onView(withId(R.id.editTextUsername)).check(matches(isDisplayed()))
+        takeScreenshot()
     }
 }

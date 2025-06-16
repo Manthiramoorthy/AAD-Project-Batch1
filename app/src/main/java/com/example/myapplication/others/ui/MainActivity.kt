@@ -29,15 +29,6 @@ class MainActivity : AppCompatActivity() {
         }
         setContentView(binding.root)
         binding.loginButton.setOnClickListener {
-//            lifecycleScope.launch(Dispatchers.IO) {
-//                for (i in 1..10) {
-//                    withContext(Dispatchers.Main) {
-//                        binding.textGreeting.text = "Number " + i
-//                    }
-//                    Log.d("MainActivty",  "Number " + i)
-//                    delay(1000)
-//                }
-//            }
 
             val username = binding.editTextUsername.text.toString()
             val password = binding.editTextPassword.text.toString()

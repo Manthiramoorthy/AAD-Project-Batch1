@@ -17,6 +17,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+
+// Just to see this changes in git commit
 @RunWith(AndroidJUnit4::class)
 class NotesViewModelIntegrationTest {
 
